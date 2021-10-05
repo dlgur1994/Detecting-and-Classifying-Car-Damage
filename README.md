@@ -1,1 +1,1 @@
-# Detecting and Classifing Car Damage
+# Detecting and Classifying Car Damage

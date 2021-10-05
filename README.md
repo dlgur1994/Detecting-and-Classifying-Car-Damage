@@ -1,1 +1,1 @@
-# Detecting_and_Classifing_Car_Damage
+# Detecting and Classifing Car Damage

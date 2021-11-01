@@ -19,5 +19,3 @@
 5. Train
 
 6. Test
-
-<test for co>

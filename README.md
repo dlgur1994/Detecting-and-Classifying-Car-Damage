@@ -18,15 +18,13 @@
 - Base model을 찾으면 성능을 높이기 위해 Data Augmentation 등 data에 대한 접근과 모델의 파라미터들에 대한 접근을 한다.
 
 ## 2. Paper Review
-
 |모델|성능|논문링크|요약|작성자|
-|---|---|---|---|---|
+|:---:|:---:|:---:|:---:|:---:|
 |U-Net|?|[link](https://arxiv.org/pdf/1505.04597.pdf)|[link](https://kim123.notion.site/U-Net-Convolutional-Networks-for-Biomedical-Image-Segmentation-98ba91df596a4df197ec5e4b93fe323e)|혁|
 
 ## 3. Data
-
 |파손유형|Test|Train|Valid|
-|---|---|---|---|
+|:---:|:---:|:---:|:---:|
 |Dent|?|?|?|
 |Scratch|?|?|?|
 |Spacing|?|?|?|

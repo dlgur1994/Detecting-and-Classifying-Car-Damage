@@ -25,7 +25,7 @@
 |Spacing|?|?|?|
 
 ## 3. Data Preprocessing
-- 원본 이미지 추출
+- Augmentation된 이미지가 섞인 데이터 셋에서 원본 이미지 추출
 - Augmentation 적용
     - 예) Cutmix 
 

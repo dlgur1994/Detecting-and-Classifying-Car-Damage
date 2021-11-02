@@ -54,7 +54,7 @@
 │  │  └─masks
 │  └─valid
 │  │  ├─images
-│  │  └─masks
+└─ ─  └─masks
 ``` 
 
 ## 4. Data Preprocessing

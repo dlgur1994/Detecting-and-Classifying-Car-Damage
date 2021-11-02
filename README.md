@@ -24,38 +24,12 @@
 |U-Net|?|[link](https://arxiv.org/pdf/1505.04597.pdf)|[link](https://kim123.notion.site/U-Net-Convolutional-Networks-for-Biomedical-Image-Segmentation-98ba91df596a4df197ec5e4b93fe323e)|혁|
 
 ## 3. Data
-```sh
-├─Dent
-│  ├─test
-│  │  ├─images
-│  │  └─masks
-│  ├─train
-│  │  ├─images
-│  │  └─masks
-│  └─valid
-│  │  ├─images
-│  │  └─masks
-├─Scratch
-│  ├─test
-│  │  ├─images
-│  │  └─masks
-│  ├─train
-│  │  ├─images
-│  │  └─masks
-│  └─valid
-│  │  ├─images
-│  │  └─masks
-└─Spacing
-│  ├─test
-│  │  ├─images
-│  │  └─masks
-│  ├─train
-│  │  ├─images
-│  │  └─masks
-│  └─valid
-│  │  ├─images
-└─ ─  └─masks
-``` 
+
+|파손유형|Test|Train|Valid|
+|---|---|---|---|
+|Dent|?|?|?|
+|Scratch|?|?|?|
+|Spacing|?|?|?|
 
 ## 4. Data Preprocessing
 - 원본 이미지 추출

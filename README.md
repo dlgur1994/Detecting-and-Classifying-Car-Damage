@@ -34,7 +34,7 @@
 |:---:|:---:|:---:|:---:|:---:|
 |U-Net|?|[link](https://arxiv.org/pdf/1505.04597.pdf)|[link](https://kim123.notion.site/U-Net-Convolutional-Networks-for-Biomedical-Image-Segmentation-98ba91df596a4df197ec5e4b93fe323e)|혁|
 
-&nasp;&nasp;&nasp;**Base Model: ?**
+(　) **Base Model: ?**
 
 ## 5. Train
 

@@ -22,11 +22,11 @@
 - python: 3.8 (미정)
 
 ## 3. Data
-|파손유형|Test|Train|Valid|
-|:---:|:---:|:---:|:---:|
-|Dent|?|?|?|
-|Scratch|?|?|?|
-|Spacing|?|?|?|
+|파손유형|Test|Train|Valid|Total|
+|:---:|:---:|:---:|:---:|:---:|
+|Dent|209|1690|212|2111|
+|Scratch|209|1690|212|2111|
+|Spacing|155|1232|154|1541|
 
 ## 4. Data Preprocessing
 - Augmentation된 이미지가 섞인 데이터 셋에서 원본 이미지 추출

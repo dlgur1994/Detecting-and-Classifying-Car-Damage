@@ -21,7 +21,7 @@ class UNet(nn.Module):
             return cbr
 
         ## Contracting Path
-        self.enc1_1 = CBR2d(in_channels=3, out_channels=64)
+        self.enc1_1 = CBR2d(in_channels=1, out_channels=64)
         self.enc1_2 = CBR2d(in_channels=64, out_channels=64)
 
         self.pool1 = nn.MaxPool2d(kernel_size=2)
@@ -70,7 +70,7 @@ class UNet(nn.Module):
         self.dec1_2 = CBR2d(in_channels=2*64, out_channels=64)
         self.dec1_1 = CBR2d(in_channels=64, out_channels=64)
 
-        self.fc = nn.Conv2d(in_channels=64, out_channels=3, kernel_size=1, stride=1, padding=0, bias=True)
+        self.fc = nn.Conv2d(in_channels=64, out_channels=1, kernel_size=1, stride=1, padding=0, bias=True)
 
     def forward(self, x):
         enc1_1 = self.enc1_1(x)

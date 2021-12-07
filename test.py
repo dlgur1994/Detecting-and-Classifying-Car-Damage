@@ -33,7 +33,7 @@ ckpt_dir = args.ckpt_dir
 result_dir = args.result_dir
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-
+SMOOTH = 1e-6
 
 # Making Directories
 if not os.path.exists(result_dir):
@@ -66,7 +66,7 @@ optim = torch.optim.Adam(net.parameters(), lr=lr)
 # defining functions for saving outputs
 fn_tonumpy = lambda x: x.to('cpu').detach().numpy().transpose(0, 2, 3, 1)
 fn_denorm = lambda x, mean, std: (x * std) + mean
-fn_class = lambda x: 1.0 * (x > -6.0)
+fn_class = lambda x: 1.0 * (x > -0.9) # dent: -0.9, spacing: -1.1
 
 net, optim, st_epoch = load(ckpt_dir=ckpt_dir, net=net, optim=optim)
 
@@ -79,32 +79,31 @@ with torch.no_grad():
         img = data['img'].to(device)
         label = data['label'].to(device)
         output = net(img)
-
-        # label_temp = label.squeeze(1)
-        # output_temp = output.squeeze(1)  # BATCH x 1 x H x W => BATCH x H x W
-    
-        # intersection = (output_temp & label_temp).float().sum((1, 2))  # Will be zero if Truth=0 or Prediction=0
-        # union = (outputs | labels).float().sum((1, 2))         # Will be zzero if both are 0    
-        # iou_score = np.sum(intersection) / np.sum(union)
-        
-        # iou_scores.append(iou_score)
-        # print("TEST: BATCH %04d \ %04d | IoU %.4f" % (batch, num_batch_test, iou_score))
-        print("TEST: BATCH %04d \ %04d" % (batch, num_batch_test))
         
         # saving outputs
         img = fn_tonumpy(fn_denorm(img, mean=0.5, std=0.5))
         label = fn_tonumpy(label)
         output = fn_tonumpy(fn_class(output))
 
-        for j in range(label.shape[0]):
-            id = num_batch_test * (batch - 1) + j
+        # for j in range(label.shape[0]):
+        #     id = num_batch_test * (batch - 1) + j
 
-            plt.imsave(os.path.join(result_dir, 'jpg', 'image_%04d.png' % id), img[j].squeeze(), cmap='gray')
-            plt.imsave(os.path.join(result_dir, 'jpg', 'label_%04d.png' % id), label[j].squeeze(), cmap='gray')
-            plt.imsave(os.path.join(result_dir, 'jpg', 'output_%04d.png' % id), output[j].squeeze(), cmap='gray')
+        #     plt.imsave(os.path.join(result_dir, 'jpg', 'image_%04d.png' % id), img[j].squeeze(), cmap='gray')
+        #     plt.imsave(os.path.join(result_dir, 'jpg', 'label_%04d.png' % id), label[j].squeeze(), cmap='gray')
+        #     plt.imsave(os.path.join(result_dir, 'jpg', 'output_%04d.png' % id), output[j].squeeze(), cmap='gray')
 
-            np.save(os.path.join(result_dir, 'numpy', 'image_%04d.npy' % id), img[j].squeeze())
-            np.save(os.path.join(result_dir, 'numpy', 'label_%04d.npy' % id), label[j].squeeze())
-            np.save(os.path.join(result_dir, 'numpy', 'output_%04d.npy' % id), output[j].squeeze())
-        # break
-# print("AVERAGE TEST: BATCH %04d \ %04d | mIoU %.4f" % (batch, num_batch_test, np.mean(iou_scores)))
+        #     np.save(os.path.join(result_dir, 'numpy', 'image_%04d.npy' % id), img[j].squeeze())
+        #     np.save(os.path.join(result_dir, 'numpy', 'label_%04d.npy' % id), label[j].squeeze())
+        #     np.save(os.path.join(result_dir, 'numpy', 'output_%04d.npy' % id), output[j].squeeze())
+
+        label_temp = label.squeeze(3).astype(int)
+        output_temp = output.squeeze(3).astype(int)
+
+        intersection = np.sum(label_temp & output_temp)
+        union = np.sum(label_temp | output_temp)
+        iou_score = (intersection + SMOOTH) / (union + SMOOTH)
+
+        iou_scores.append(iou_score)
+        print("TEST: BATCH %04d \ %04d | IoU %.4f" % (batch, num_batch_test, iou_score))
+
+print("AVERAGE TEST: BATCH %04d \ %04d | mIoU %.4f" % (batch, num_batch_test, sum(iou_scores)/len(iou_scores)))

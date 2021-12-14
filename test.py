@@ -6,6 +6,8 @@ from torchvision import transforms
 import argparse
 
 from model import UNet
+from efficientunet import *
+
 from dataset import *
 from util import *
 
@@ -13,6 +15,8 @@ from util import *
 # Parsing Inputs
 parser = argparse.ArgumentParser(description="Test the Model",
                                  formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+
+parser.add_argument("--model_name", default="UNet", type=str, dest="model_name")
 
 parser.add_argument("--lr", default=1e-3, type=float, dest="lr")
 parser.add_argument("--batch_size", default=4, type=int, dest="batch_size")
@@ -25,6 +29,8 @@ args = parser.parse_args()
 
 
 # Setting Variables
+model_name = args.model_name
+
 lr = args.lr
 batch_size = args.batch_size
 
@@ -55,7 +61,24 @@ num_batch_test = np.ceil(num_data_test / batch_size)
 
 
 # Creating Network
-net = UNet().to(device)
+if model_name == 'UNet':
+    net = UNet().to(device)
+elif model_name == 'efficientunet_b0':
+    net = get_efficientunet_b0(out_channels=1, concat_input=True, pretrained=True).to(device)
+elif model_name == 'efficientunet_b1':
+    net = get_efficientunet_b1(out_channels=1, concat_input=True, pretrained=True).to(device)
+elif model_name == 'efficientunet_b2':
+    net = get_efficientunet_b2(out_channels=1, concat_input=True, pretrained=True).to(device)
+elif model_name == 'efficientunet_b3':
+    net = get_efficientunet_b3(out_channels=1, concat_input=True, pretrained=True).to(device)
+elif model_name == 'efficientunet_b4':
+    net = get_efficientunet_b4(out_channels=1, concat_input=True, pretrained=True).to(device)
+elif model_name == 'efficientunet_b5':
+    net = get_efficientunet_b5(out_channels=1, concat_input=True, pretrained=True).to(device)
+elif model_name == 'efficientunet_b6':
+    net = get_efficientunet_b6(out_channels=1, concat_input=True, pretrained=True).to(device)
+elif model_name == 'efficientunet_b7':
+    net = get_efficientunet_b7(out_channels=1, concat_input=True, pretrained=True).to(device)
 
 
 # Defining Optimizer
@@ -66,7 +89,27 @@ optim = torch.optim.Adam(net.parameters(), lr=lr)
 # defining functions for saving outputs
 fn_tonumpy = lambda x: x.to('cpu').detach().numpy().transpose(0, 2, 3, 1)
 fn_denorm = lambda x, mean, std: (x * std) + mean
-fn_class = lambda x: 1.0 * (x > -0.9) # dent: -0.9, spacing: -1.1
+fn_class = lambda x: 1.0 * (x > -0.1)
+'''
+UNet
+  - dent: -1.1(0.6221), scratch: -1.3(0.4251), spacing: -0.6(0.4498)
+Efb0
+  - dent: -1.5(0.6146), scratch: (), spacing: ()
+Efb1
+  - dent: 0(0.6322), scratch: (), spacing: ()
+Efb2
+  - dent: (), scratch: (), spacing: ()
+Efb3
+  - dent: (), scratch: (), spacing: ()
+Efb4
+  - dent: 1.2(0.6370), scratch: -0.1(0.5308), spacing: 0.6(0.4471)
+Efb5
+  - dent: (), scratch: (), spacing: ()
+Efb6
+  - dent: (), scratch: (), spacing: ()
+Efb7
+  - dent: (), scratch: (), spacing: ()
+'''
 
 net, optim, st_epoch = load(ckpt_dir=ckpt_dir, net=net, optim=optim)
 
